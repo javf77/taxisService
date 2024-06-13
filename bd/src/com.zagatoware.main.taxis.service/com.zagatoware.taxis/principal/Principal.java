@@ -37,8 +37,23 @@ public class VentanaConMenuJavaFX extends Application {
             MenuItem itemSeleccionar = new MenuItem("Seleccionar"); 
             menuEditar.getItems.addAll(itemCopiar,itemCortar,itemPegar,itemSeleccionar,itemSeleccionar);
             menuBar.getMenus.add(menuBar);
+            Menu menuParqueVehicular = new Menu ("Parque Vehicular");
+            MenuItem itemVehiculos = new MenuItem ("Catalogos Vehiculos");
+            MenuItem itemVehiculosIngresos = new MenuItem ("Ingresos");
+            MenuItem itemEgresos=new MenuItem ("Egresos");
+            MenuItem itemReporte=new MenuItem ("Reporte");
+            menuParqueVehicular.getItems.addAll(itemVehiculos,itemVehiculosIngresos,itemEgresos,itemReporte);
+            menuBar.getMenus.add(menuParqueVehicular);
 
-            
+            Menu menuCatalogos = new Menu ("Catalogos");
+
+            menuBar.getMenus.add(menuCatalogos);
+
+            Menu menuAcerca = new Menu ("Ayuda");
+             MenuItem itemAcerca = new MenuItem ("Acerca de ..");
+            menuAcerca.getItems.addAll(itemAcerca)
+            menuBar.getMenus.add(menuAcerca);
+
     }
 
 }

@@ -54,6 +54,14 @@ public class VentanaConMenuJavaFX extends Application {
             menuAcerca.getItems.addAll(itemAcerca)
             menuBar.getMenus.add(menuAcerca);
 
-    }
+              BorderPane root = new BorderPane();
+        root.setTop(menuBar);
 
+        Scene scene = new Scene(root, 400, 300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

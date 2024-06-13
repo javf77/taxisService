@@ -18,8 +18,16 @@ public class VentanaConMenuJavaFX extends Application {
         // Barra del menu principal
             MenuBar menuBar = new MenuBar();
 
-            
+            Menu menuArchivo = new Menu("Archivo");
+            MenuItem menuItemAbrir = new MenuItem("Abrir");
+            menuItemAbrir.setOnAction(e->{});
+            MenuItem MenuItem itemCerrar = new MenuItem("Cerrar");
+            MenuItem menuItemSalir = new MenuItem("Salir");
+            menuItemSalir.setOnAction(e->System.exit(0));
+            menuArchivo.getItems().addAll(menuItemAbrir, itemCerrar, menuItemSalir);
+            menuBar.getMenus().add(menuArchivo);
 
+            
     }
 
 }

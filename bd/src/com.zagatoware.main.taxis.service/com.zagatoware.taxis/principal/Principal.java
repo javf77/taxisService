@@ -22,10 +22,21 @@ public class VentanaConMenuJavaFX extends Application {
             MenuItem menuItemAbrir = new MenuItem("Abrir");
             menuItemAbrir.setOnAction(e->{});
             MenuItem MenuItem itemCerrar = new MenuItem("Cerrar");
+            MenuItem itemImprimir = new MenuItem("imprimir");
             MenuItem menuItemSalir = new MenuItem("Salir");
             menuItemSalir.setOnAction(e->System.exit(0));
-            menuArchivo.getItems().addAll(menuItemAbrir, itemCerrar, menuItemSalir);
+            menuArchivo.getItems().addAll(menuItemAbrir, 
+                                        itemCerrar,
+                                        itemImprimir, 
+                                        menuItemSalir);
             menuBar.getMenus().add(menuArchivo);
+            Menu menuEditar = new Menu ("Editar");
+            MenuItem itemCopiar = new MenuItem("Copiar");
+            MenuItem itemCortar = new MenuItem("Cortar"); 
+            MenuItem itemPegar = new MenuItem("Pegar"); 
+            MenuItem itemSeleccionar = new MenuItem("Seleccionar"); 
+            menuEditar.getItems.addAll(itemCopiar,itemCortar,itemPegar,itemSeleccionar,itemSeleccionar);
+            menuBar.getMenus.add(menuBar);
 
             
     }

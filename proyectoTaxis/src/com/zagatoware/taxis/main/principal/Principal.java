@@ -11,7 +11,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class VentanaConMenuJavaFX extends Application {
+public class Principal extends Application {
 
     @override
     public void start(Stage primaryStage) {

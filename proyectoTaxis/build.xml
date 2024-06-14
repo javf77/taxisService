@@ -1,0 +1,32 @@
+<project name="proyectoTaxis" basedir="." default="compile">
+    <!-- Definir propiedades -->
+    <property name="src.dir" location="src"/>
+    <property name="build.dir" location="build"/>
+    <property name="classes.dir" location="${build.dir}/classes"/>
+
+    <!-- Limpiar el directorio de clases -->
+    <target name="clean">
+        <delete dir="${classes.dir}"/>
+    </target>
+
+    <!-- Crear el directorio de clases si no existe -->
+    <target name="prepare">
+        <mkdir dir="${classes.dir}"/>
+    </target>
+
+    <!-- Compilar el código fuente -->
+    <target name="compile" depends="clean, prepare">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+    <!-- Ejemplo de ejecución de la clase principal -->
+    <target name="run" depends="compile">
+        <java classname="com.zagatoware.taxis.main.principal.Principal" fork="true">
+            <classpath>
+                <pathelement path="${classes.dir}"/>
+            </classpath>
+        </java>
+    </target>
+</project>

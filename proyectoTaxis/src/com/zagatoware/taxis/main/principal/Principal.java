@@ -21,7 +21,7 @@ public class Principal extends Application {
             Menu menuArchivo = new Menu("Archivo");
             MenuItem menuItemAbrir = new MenuItem("Abrir");
             menuItemAbrir.setOnAction(e->{});
-            MenuItem MenuItem itemCerrar = new MenuItem("Cerrar");
+            MenuItem itemCerrar = new MenuItem("Cerrar");
             MenuItem itemImprimir = new MenuItem("imprimir");
             MenuItem menuItemSalir = new MenuItem("Salir");
             menuItemSalir.setOnAction(e->System.exit(0));
@@ -51,7 +51,7 @@ public class Principal extends Application {
 
             Menu menuAcerca = new Menu ("Ayuda");
              MenuItem itemAcerca = new MenuItem ("Acerca de ..");
-            menuAcerca.getItems.addAll(itemAcerca)
+            menuAcerca.getItems.addAll(itemAcerca);
             menuBar.getMenus.add(menuAcerca);
 
               BorderPane root = new BorderPane();

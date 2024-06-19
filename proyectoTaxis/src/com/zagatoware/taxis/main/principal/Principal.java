@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 public class Principal extends Application {
 
+     
     @override
     public void start(Stage primaryStage) {
         // Barra del menu principal

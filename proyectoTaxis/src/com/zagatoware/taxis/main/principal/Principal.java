@@ -13,8 +13,7 @@ import javafx.stage.Stage;
 
 public class Principal extends Application {
 
-     
-    @override
+    @Override
     public void start(Stage primaryStage) {
         // Barra del menu principal
             MenuBar menuBar = new MenuBar();
@@ -36,24 +35,24 @@ public class Principal extends Application {
             MenuItem itemCortar = new MenuItem("Cortar"); 
             MenuItem itemPegar = new MenuItem("Pegar"); 
             MenuItem itemSeleccionar = new MenuItem("Seleccionar"); 
-            menuEditar.getItems.addAll(itemCopiar,itemCortar,itemPegar,itemSeleccionar,itemSeleccionar);
-            menuBar.getMenus.add(menuBar);
+            menuEditar.getItems().addAll(itemCopiar,itemCortar,itemPegar,itemSeleccionar,itemSeleccionar);
+            menuBar.getMenus().add(menuEditar);
             Menu menuParqueVehicular = new Menu ("Parque Vehicular");
             MenuItem itemVehiculos = new MenuItem ("Catalogos Vehiculos");
             MenuItem itemVehiculosIngresos = new MenuItem ("Ingresos");
             MenuItem itemEgresos=new MenuItem ("Egresos");
             MenuItem itemReporte=new MenuItem ("Reporte");
-            menuParqueVehicular.getItems.addAll(itemVehiculos,itemVehiculosIngresos,itemEgresos,itemReporte);
-            menuBar.getMenus.add(menuParqueVehicular);
+            menuParqueVehicular.getItems().addAll(itemVehiculos,itemVehiculosIngresos,itemEgresos,itemReporte);
+            menuBar.getMenus().add(menuParqueVehicular);
 
             Menu menuCatalogos = new Menu ("Catalogos");
 
-            menuBar.getMenus.add(menuCatalogos);
+            menuBar.getMenus().add(menuCatalogos);
 
             Menu menuAcerca = new Menu ("Ayuda");
              MenuItem itemAcerca = new MenuItem ("Acerca de ..");
-            menuAcerca.getItems.addAll(itemAcerca);
-            menuBar.getMenus.add(menuAcerca);
+            menuAcerca.getItems().addAll(itemAcerca);
+            menuBar.getMenus().add(menuAcerca);
 
               BorderPane root = new BorderPane();
         root.setTop(menuBar);

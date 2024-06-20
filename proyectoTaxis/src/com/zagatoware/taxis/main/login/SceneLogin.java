@@ -18,7 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class Principal {
+public class SceneLogin {
 
     public void  mostrar()
     {
@@ -27,8 +27,8 @@ public class Principal {
     
        Stage ventanaLogin =  new Stage();
        Scene scena = new Scene(borderPane, 200, 150);  
-       newWindow.setScene(scena);
+       ventanaLogin.setScene(scena);
        
-       newWindow.show();
+       ventanaLogin.show();
     }
 }

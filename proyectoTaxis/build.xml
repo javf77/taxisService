@@ -1,32 +1,52 @@
-<project name="proyectoTaxis" basedir="." default="compile">
-    <!-- Definir propiedades -->
+<project name="proyectoTaxi" basedir="." default="run">
+    <!-- Define properties -->
     <property name="src.dir" location="src"/>
     <property name="build.dir" location="build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
+    <property name="jar.dir" location="${build.dir}/jar"/>
+    <property name="javafx.sdk" location="lib/javafx-sdk-22.0-2.1"/>
+    <property name="javafx.modules" value="javafx.controls,javafx.fxml"/>
 
-    <!-- Limpiar el directorio de clases -->
-    <target name="clean">
-        <delete dir="${classes.dir}"/>
-    </target>
-
-    <!-- Crear el directorio de clases si no existe -->
-    <target name="prepare">
+    <!-- Initialize directories -->
+    <target name="init">
         <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${jar.dir}"/>
     </target>
 
-    <!-- Compilar el código fuente -->
-    <target name="compile" depends="clean, prepare">
+    <!-- Clean build directory -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- Compile source files -->
+    <target name="compile" depends="init">
         <javac srcdir="${src.dir}" destdir="${classes.dir}">
-            <include name="**/*.java"/>
+            <classpath>
+                <fileset dir="${javafx.sdk}/lib">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
         </javac>
     </target>
 
-    <!-- Ejemplo de ejecución de la clase principal -->
-    <target name="run" depends="compile">
-        <java classname="com.zagatoware.taxis.main.principal.Principal" fork="true">
-            <classpath>
-                <pathelement path="${classes.dir}"/>
-            </classpath>
+    <!-- Create JAR file -->
+    <target name="jar" depends="compile">
+        <jar destfile="${jar.dir}/JavaFXExample.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="com.zagatoware.taxis.main.principal.Principal"/>
+                <attribute name="Class-Path" value="${javafx.sdk}/lib"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Run the application -->
+    <target name="run" depends="jar">
+        <java jar="${jar.dir}/JavaFXExample.jar" fork="true">
+            <jvmarg value="--module-path"/>
+            <jvmarg value="${javafx.sdk}/lib"/>
+            <jvmarg value="--add-modules"/>
+            <jvmarg value="${javafx.modules}"/>
         </java>
     </target>
 </project>
+

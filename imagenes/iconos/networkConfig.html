@@ -1,0 +1,265 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <body>
+  <script src="https://unpkg.com/gojs@3.0.4/release/go.js"></script>
+  <p>
+    This is a minimalist HTML and JavaScript skeleton of the GoJS Sample
+    <a href="https://gojs.net/latest/samples/networkConfig.html">networkConfig.html</a>. It was automatically generated from a button on the sample page,
+    and does not contain the full HTML. It is intended as a starting point to adapt for your own usage.
+    For many samples, you may need to inspect the
+    <a href="https://github.com/NorthwoodsSoftware/GoJS/blob/master/samples/networkConfig.html">full source on Github</a>
+    and copy other files or scripts.
+  </p>
+  <div id="allSampleContent" class="p-4 w-full">
+          
+            
+            
+
+
+<div id="sample">
+  <div style="width: 100%; display: flex; justify-content: space-between">
+    <!-- The DIV for the Diagram needs an explicit size or else we won't see anything.
+       This also adds a border to help see the edges of the viewport. -->
+    <div id="myPaletteDiv" style="width: 100px; margin-right: 2px; border: 1px solid black; position: relative; -webkit-tap-highlight-color: rgba(255, 255, 255, 0);"><canvas tabindex="0" width="98" height="448" style="position: absolute; top: 0px; left: 0px; z-index: 2; user-select: none; touch-action: none; width: 98px; height: 448px;"></canvas><div style="position: absolute; overflow: auto; width: 98px; height: 448px; z-index: 1;"><div style="position: absolute; width: 1px; height: 1px;"></div></div></div>
+    <div id="myDiagramDiv" style="border: 1px solid black; flex-grow: 1; height: 450px; position: relative; -webkit-tap-highlight-color: rgba(255, 255, 255, 0); cursor: auto;"><canvas tabindex="0" width="1144" height="448" style="position: absolute; top: 0px; left: 0px; z-index: 2; user-select: none; touch-action: none; width: 1144px; height: 448px; cursor: auto;"></canvas><div style="position: absolute; overflow: auto; width: 1144px; height: 448px; z-index: 1;"><div style="position: absolute; width: 1px; height: 1px;"></div></div></div>
+  </div>
+  <p>This sample consists of a CISCO-style network configuration diagram.</p>
+  <p>Icons in this sample are open-licensed from <a href="https://www.svgrepo.com/collection/servers-isometric-icons/">here</a>.</p>
+
+  <button onclick="save()">Save</button>
+  <button onclick="load()">Load</button>
+  Diagram Model saved in JSON format:
+  <pre><div id="modelJson" style="width:100%;height:600px">{
+  "class": "go.GraphLinksModel",
+  "nodeDataArray": [
+    { "key": 0, "type": "Cloud", "loc": "0 0", "text": "Internet" },
+    { "key": 1, "type": "Firewall", "loc": "100 0" },
+    { "key": 2, "type": "Router", "loc": "200 0" },
+    { "key": 3, "type": "Server", "loc": "300 0" },
+    { "key": 4, "type": "Switch", "loc": "200 100" },
+    { "key": 5, "type": "Firewall", "loc": "25 100" },
+    { "key": 6, "type": "Router", "loc": "25 200" },
+    { "key": 7, "type": "Switch", "loc": "400 100" },
+
+    { "key": 10, "isGroup": true, "text": "Intranet 1" },
+    { "key": 11, "type": "PC", "loc": "150 220", "group": 10 },
+    { "key": 12, "type": "PC", "loc": "250 220", "group": 10 },
+    { "key": 13, "type": "PC", "loc": "150 270", "group": 10 },
+    { "key": 14, "type": "PC", "loc": "250 270", "group": 10 },
+
+    { "key": 20, "isGroup": true, "text": "Intranet 2" },
+    { "key": 21, "type": "PC", "loc": "350 220", "group": 20 },
+    { "key": 22, "type": "PC", "loc": "450 220", "group": 20 },
+    { "key": 23, "type": "PC", "loc": "350 270", "group": 20 },
+    { "key": 24, "type": "PC", "loc": "450 270", "group": 20 },
+
+    { "key": 30, "isGroup": true, "text": "Isolation test" },
+    { "key": 31, "type": "PC", "loc": "-100 172", "group": 30 },
+    { "key": 32, "type": "PC", "loc": "-100 242", "group": 30 }
+  ],
+  "linkDataArray": [
+    { "from": 0, "to": 1 },
+    { "from": 1, "to": 2 },
+    { "from": 2, "to": 3 },
+    { "from": 2, "to": 4 },
+    { "from": 5, "to": 4 },
+    { "from": 5, "to": 6 },
+    { "from": 4, "to": 7 },
+    { "from": 4, "to": 10 },
+    { "from": 7, "to": 20 },
+    { "from": 6, "to": 30 }
+  ]
+}</div></pre>
+<p class="text-xs">GoJS version 3.0.4. Copyright 1998-2024 by Northwoods Software.</p></div>
+
+<script id="code">
+  var myDiagram;
+  var myPalette;
+
+  function init() {
+    myDiagram = new go.Diagram(
+      'myDiagramDiv', // create a Diagram for the HTML Div element
+      {
+        'commandHandler.archetypeGroupData': { isGroup: true, text: 'Subnet' },
+        'undoManager.isEnabled': true,
+      }
+    ); // enable undo & redo
+
+    myDiagram.nodeTemplate = new go.Node('Spot', {
+      locationSpot: go.Spot.Center,
+      locationObjectName: 'BODY',
+      selectionObjectName: 'BODY',
+    })
+      .bindTwoWay('location', 'loc', go.Point.parse, go.Point.stringify)
+      .add(
+        new go.Picture({
+          name: 'BODY',
+          width: 50,
+          height: 50,
+          portId: '',
+          fromLinkable: true,
+          toLinkable: true,
+          cursor: 'pointer',
+        }).bind('source', 'type', (t) => `images/network/${t.toLowerCase()}.svg`),
+        new go.Shape({
+          width: 25,
+          height: 25,
+          fill: 'transparent',
+          strokeWidth: 0,
+        })
+      );
+
+    myDiagram.groupTemplate = new go.Group('Vertical', {
+      locationSpot: go.Spot.Center,
+      padding: 5, // to push the port out
+    }).add(
+      new go.TextBlock({
+        alignment: go.Spot.Left,
+        font: '12px georgia',
+        editable: true,
+      }).bindTwoWay('text'),
+      new go.Panel('Auto').add(
+        new go.Shape('RoundedRectangle', {
+          strokeDashArray: [2, 6],
+          stroke: '#333',
+          fill: 'rgba(0,0,0,0)',
+        }),
+        new go.Placeholder({ padding: 5 })
+      )
+    );
+
+    myPalette = new go.Palette('myPaletteDiv', {
+      nodeTemplateMap: myDiagram.nodeTemplateMap,
+      layout: new go.GridLayout({
+        cellSize: new go.Size(2, 2),
+        isViewportSized: true,
+      }),
+    });
+
+    myPalette.model.nodeDataArray = [{ type: 'Cloud' }, { type: 'Firewall' }, { type: 'Switch' }, { type: 'Server' }, { type: 'Router' }, { type: 'PC' }];
+
+    myDiagram.linkTemplate = new go.Link({
+      routing: go.Routing.Orthogonal,
+      fromSpot: go.Spot.AllSides,
+      toSpot: go.Spot.AllSides,
+      relinkableFrom: true,
+      relinkableTo: true,
+    })
+      .add(new go.Shape({ strokeWidth: 1.5, stroke: 'red' }))
+      .add(new go.Shape({ strokeWidth: 0, fill: 'red', scale: 0.7, fromArrow: 'circle' }))
+      .add(new go.Shape({ strokeWidth: 0, fill: 'red', scale: 0.7, toArrow: 'circle' }));
+
+    load();
+  }
+
+  function save() {
+    const json = document.getElementById('modelJson');
+    json.textContent = myDiagram.model.toJson();
+    myDiagram.isModified = false;
+  }
+
+  function load() {
+    const json = document.getElementById('modelJson');
+    myDiagram.model = go.Model.fromJson(json.textContent);
+  }
+
+  window.addEventListener('DOMContentLoaded', init);
+</script>
+
+          
+        <p><a href="https://github.com/NorthwoodsSoftware/GoJS/blob/master/samples/networkConfig.html" target="_blank">View this sample page's source on GitHub</a></p><pre class="language-js">
+  <span class="token keyword">var</span> myDiagram<span class="token punctuation">;</span>
+  <span class="token keyword">var</span> myPalette<span class="token punctuation">;</span>
+
+  <span class="token keyword">function</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    myDiagram <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Diagram</span><span class="token punctuation">(</span>
+      <span class="token string">'myDiagramDiv'</span><span class="token punctuation">,</span> <span class="token comment">// create a Diagram for the HTML Div element</span>
+      <span class="token punctuation">{</span>
+        <span class="token string-property property">'commandHandler.archetypeGroupData'</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">isGroup</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token literal-property property">text</span><span class="token operator">:</span> <span class="token string">'Subnet'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token string-property property">'undoManager.isEnabled'</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// enable undo &amp; redo</span>
+
+    myDiagram<span class="token punctuation">.</span>nodeTemplate <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Node</span><span class="token punctuation">(</span><span class="token string">'Spot'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">locationSpot</span><span class="token operator">:</span> go<span class="token punctuation">.</span>Spot<span class="token punctuation">.</span>Center<span class="token punctuation">,</span>
+      <span class="token literal-property property">locationObjectName</span><span class="token operator">:</span> <span class="token string">'BODY'</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">selectionObjectName</span><span class="token operator">:</span> <span class="token string">'BODY'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">bindTwoWay</span><span class="token punctuation">(</span><span class="token string">'location'</span><span class="token punctuation">,</span> <span class="token string">'loc'</span><span class="token punctuation">,</span> go<span class="token punctuation">.</span>Point<span class="token punctuation">.</span>parse<span class="token punctuation">,</span> go<span class="token punctuation">.</span>Point<span class="token punctuation">.</span>stringify<span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>
+        <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Picture</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+          <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'BODY'</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">width</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">height</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">portId</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">fromLinkable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">toLinkable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">cursor</span><span class="token operator">:</span> <span class="token string">'pointer'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token string">'source'</span><span class="token punctuation">,</span> <span class="token string">'type'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">t</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">images/network/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>t<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">.svg</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Shape</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+          <span class="token literal-property property">width</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">height</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">fill</span><span class="token operator">:</span> <span class="token string">'transparent'</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">strokeWidth</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    myDiagram<span class="token punctuation">.</span>groupTemplate <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Group</span><span class="token punctuation">(</span><span class="token string">'Vertical'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">locationSpot</span><span class="token operator">:</span> go<span class="token punctuation">.</span>Spot<span class="token punctuation">.</span>Center<span class="token punctuation">,</span>
+      <span class="token literal-property property">padding</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token comment">// to push the port out</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>
+      <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>TextBlock</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token literal-property property">alignment</span><span class="token operator">:</span> go<span class="token punctuation">.</span>Spot<span class="token punctuation">.</span>Left<span class="token punctuation">,</span>
+        <span class="token literal-property property">font</span><span class="token operator">:</span> <span class="token string">'12px georgia'</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">editable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bindTwoWay</span><span class="token punctuation">(</span><span class="token string">'text'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Panel</span><span class="token punctuation">(</span><span class="token string">'Auto'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>
+        <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Shape</span><span class="token punctuation">(</span><span class="token string">'RoundedRectangle'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          <span class="token literal-property property">strokeDashArray</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">stroke</span><span class="token operator">:</span> <span class="token string">'#333'</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">fill</span><span class="token operator">:</span> <span class="token string">'rgba(0,0,0,0)'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Placeholder</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">padding</span><span class="token operator">:</span> <span class="token number">5</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    myPalette <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Palette</span><span class="token punctuation">(</span><span class="token string">'myPaletteDiv'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">nodeTemplateMap</span><span class="token operator">:</span> myDiagram<span class="token punctuation">.</span>nodeTemplateMap<span class="token punctuation">,</span>
+      <span class="token literal-property property">layout</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>GridLayout</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token literal-property property">cellSize</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Size</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">isViewportSized</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    myPalette<span class="token punctuation">.</span>model<span class="token punctuation">.</span>nodeDataArray <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'Cloud'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'Firewall'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'Switch'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'Server'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'Router'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'PC'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    myDiagram<span class="token punctuation">.</span>linkTemplate <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Link</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      <span class="token literal-property property">routing</span><span class="token operator">:</span> go<span class="token punctuation">.</span>Routing<span class="token punctuation">.</span>Orthogonal<span class="token punctuation">,</span>
+      <span class="token literal-property property">fromSpot</span><span class="token operator">:</span> go<span class="token punctuation">.</span>Spot<span class="token punctuation">.</span>AllSides<span class="token punctuation">,</span>
+      <span class="token literal-property property">toSpot</span><span class="token operator">:</span> go<span class="token punctuation">.</span>Spot<span class="token punctuation">.</span>AllSides<span class="token punctuation">,</span>
+      <span class="token literal-property property">relinkableFrom</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">relinkableTo</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Shape</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">strokeWidth</span><span class="token operator">:</span> <span class="token number">1.5</span><span class="token punctuation">,</span> <span class="token literal-property property">stroke</span><span class="token operator">:</span> <span class="token string">'red'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Shape</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">strokeWidth</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token literal-property property">fill</span><span class="token operator">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span> <span class="token literal-property property">scale</span><span class="token operator">:</span> <span class="token number">0.7</span><span class="token punctuation">,</span> <span class="token literal-property property">fromArrow</span><span class="token operator">:</span> <span class="token string">'circle'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">go<span class="token punctuation">.</span>Shape</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">strokeWidth</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token literal-property property">fill</span><span class="token operator">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span> <span class="token literal-property property">scale</span><span class="token operator">:</span> <span class="token number">0.7</span><span class="token punctuation">,</span> <span class="token literal-property property">toArrow</span><span class="token operator">:</span> <span class="token string">'circle'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">load</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">function</span> <span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> json <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'modelJson'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    json<span class="token punctuation">.</span>textContent <span class="token operator">=</span> myDiagram<span class="token punctuation">.</span>model<span class="token punctuation">.</span><span class="token function">toJson</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    myDiagram<span class="token punctuation">.</span>isModified <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">function</span> <span class="token function">load</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> json <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'modelJson'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    myDiagram<span class="token punctuation">.</span>model <span class="token operator">=</span> go<span class="token punctuation">.</span>Model<span class="token punctuation">.</span><span class="token function">fromJson</span><span class="token punctuation">(</span>json<span class="token punctuation">.</span>textContent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'DOMContentLoaded'</span><span class="token punctuation">,</span> init<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre></div>
+  </body>
+  </html>

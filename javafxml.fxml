@@ -32,17 +32,20 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="510.0" prefWidth="798.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
+    <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
@@ -74,17 +77,37 @@
             <MenuItem mnemonicParsing="false" text="Unselect All" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Help">
+        <Menu mnemonicParsing="false" text="Ayuda">
           <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+            <MenuItem mnemonicParsing="false" text="Acerca de " />
           </items>
         </Menu>
+            <Menu mnemonicParsing="false" text="Catalogos">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Concepto Ingreso " />
+                  <MenuItem mnemonicParsing="false" text="Concepto Egresos" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Marca" />
+                  <MenuItem mnemonicParsing="false" text="Modelo" />
+                  <MenuItem mnemonicParsing="false" text="statusIngreso" />
+                  <MenuItem mnemonicParsing="false" text="statusEgresos" />
+                  <MenuItem mnemonicParsing="false" text="Status Parque Veh" />
+              </items>
+            </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-         <children>
-            <BorderPane layoutX="10.0" layoutY="15.0" prefHeight="452.0" prefWidth="776.0" />
-         </children>
-    </AnchorPane>
+      <BorderPane fx:id="bordo" prefHeight="483.0" prefWidth="798.0">
+         <top>
+            <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <items>
+                  <Button mnemonicParsing="false" text="Guardar" />
+                  <Button mnemonicParsing="false" text="Editar" />
+                  <Button mnemonicParsing="false" text="Rollback" />
+                  <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
+                  <DatePicker />
+               </items>
+            </ToolBar>
+         </top>
+      </BorderPane>
   </children>
 </VBox>

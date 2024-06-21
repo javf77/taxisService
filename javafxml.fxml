@@ -39,6 +39,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
@@ -99,15 +101,26 @@
       <BorderPane fx:id="bordo" prefHeight="483.0" prefWidth="798.0">
          <top>
             <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <items>
-                  <Button mnemonicParsing="false" text="Guardar" />
+              <items>
+                <Button mnemonicParsing="false" text="Guardar" />
                   <Button mnemonicParsing="false" text="Editar" />
-                  <Button mnemonicParsing="false" text="Rollback" />
-                  <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
+                  <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
                   <DatePicker />
-               </items>
+              </items>
             </ToolBar>
          </top>
+         <center>
+            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <columns>
+                  <TableColumn prefWidth="75.0" text="C1" />
+                  <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn prefWidth="75.0" text="C3" />
+                <TableColumn prefWidth="75.0" text="C4" />
+                  <TableColumn prefWidth="75.0" text="C6" />
+                  <TableColumn prefWidth="75.0" text="C5" />
+              </columns>
+            </TableView>
+         </center>
       </BorderPane>
   </children>
 </VBox>

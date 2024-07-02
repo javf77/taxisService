@@ -34,6 +34,8 @@ CREATE TABLE "parquevehicular" (
    protected int idStatus;
    protected Modelo modelo;
    protected StatusParqueVehicular status;
+   protected ArrayList<Kilometraje> kilometrajes;
+
    public void ParqueVehicular (){
 
    }
@@ -117,6 +119,8 @@ CREATE TABLE "parquevehicular" (
 
         return this.status;
    }
+
+   
    public String toString(){
         return "id = "+this.id+
         "\t Numero Serie="+this.numeroSerie+
@@ -127,5 +131,8 @@ CREATE TABLE "parquevehicular" (
         "\t Fecha Alta="+this.fechaAlta+
         "\t IdStatus="+this.idStatus+
         "\t Status=("+this.status.toString()+")";
+   }
+   public ArrayList<Kilometraje> getKilometraje (){
+        return this.kilometraje;
    }
 }

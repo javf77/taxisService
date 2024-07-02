@@ -117,4 +117,15 @@ CREATE TABLE "parquevehicular" (
 
         return this.status;
    }
+   public String toString(){
+        return "id = "+this.id+
+        "\t Numero Serie="+this.numeroSerie+
+        "\t NumeroEco="+this.numeroEco+
+        "\t Placas="+this.placas+
+        "\t idModelo="+this.idModelo+
+        "\t Modelo=("+this.modelo.toString()+")"+
+        "\t Fecha Alta="+this.fechaAlta+
+        "\t IdStatus="+this.idStatus+
+        "\t Status=("+this.status.toString()+")";
+   }
 }

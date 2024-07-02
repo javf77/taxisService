@@ -8,6 +8,17 @@ import java.util.GregorianCalendar;
 
 public class UtilFechas {
 
+	private static String [] meses ={'Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'};
+	private static String [] dias ={'Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'};
+	public static  String [] Meses(){
+	
+		return meses;
+	
+	}
+
+	public static String dias{
+		return dias;
+	}
 	public static Date iCaltoString (String str) throws ParseException
 	
 	{	
@@ -126,5 +137,12 @@ public class UtilFechas {
 		SimpleDateFormat otroFormato = new SimpleDateFormat ("HH:mm:ss");
 		
 		return otroFormato.format(fecha);
+	}
+	public static int numeroDeSemana (Date fecha){
+
+		GregorianCalendar cal = new GregorianCalendar(fecha);
+
+			return calendar.get(Calendar.WEEK_OF_YEAR);
+
 	}
 }

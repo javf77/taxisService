@@ -49,6 +49,7 @@ CREATE TABLE "parquevehicular" (
         this.idModelo = IdModelo
         this.fechaalta= FechaAlta;
         this.idStatus = idStatus;
+        super();
 
    }
    public void ParqueVehicular (int id, String numeroSerie,int numeroEco, String placas, int IdModelo, Date FechaAlta, int idStatus, Modelo modelo,StatusParqueVehicular status)
@@ -63,6 +64,7 @@ CREATE TABLE "parquevehicular" (
         this.idStatus = idStatus;
         this.modelo = modelo;
         this.status = status;
+         super();
    }
    public void setId (int id){
     this.id=id;

@@ -45,5 +45,29 @@ public class BitacoraStatusParqueVehicular{
         this.fecha=fecha;
         this.observaciones=observaciones;       
         this.status = statusParqueVehicular;    
-    )
+    }
+    public void setId (int id){
+        this.id=id;
+    }
+    public int getId (){
+        return this.id;
+    }
+    public int getIdParqueVehicular (){
+        return this.idParqueVehicular;
+    }
+    public void setIdParqueVehicular(int idParqueVehicular){
+        this.idParqueVehicular=idParqueVehicular;
+    }
+    public void setIdParqueVehicular (int idParqueVehicular){
+        this.idParqueVehicular=idParqueVehicular;
+    }
+    public int getIdParqueVehicular (){
+        return this.idStatusParqueVehicular;
+    }
+    public void setStatus (StatusParqueVehicular status){
+        this.status=status;
+    }
+    public StatusParqueVehicular getStatus (){
+        return this.status;
+    }
 } 
